@@ -1,0 +1,39 @@
+.week-abs {
+  position: absolute;
+  height: 300px;
+  width: 200px;
+  border: 1px solid #ccc;
+  background-color: #fff; }
+  .week-abs.own-birthday {
+    border: 1px solid #ff0000; }
+  .week-abs .first-day, .week-abs .last-day {
+    position: absolute; }
+  .week-abs .first-day {
+    top: 10px;
+    left: 10px; }
+  .week-abs .weekOfLife {
+    font-size: 300%;
+    color: #ccc;
+    top: calc(50% - 1.2vw);
+    position: absolute;
+    width: 100%;
+    text-align: center; }
+  .week-abs .last-day {
+    bottom: 10px;
+    right: 10px; }
+
+.calendar {
+  /* white-space: nowrap; */
+  border: 1px solid #ffcccc;
+  font-family: sans-serif; }
+
+.week {
+  width: 6%;
+  margin: 0.5%;
+  padding: 0.22%;
+  display: inline-block;
+  border: 1px solid #ccc;
+  font-size: 1.2vw; }
+
+.week.own-birthday {
+  border: 1px solid #ff0000; }

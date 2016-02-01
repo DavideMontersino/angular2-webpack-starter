@@ -1,11 +1,15 @@
-<div>
-  <span x-large>Your Content Here</span>
-  <input type="text" [value]="data.value" (input)="data.value = $event.target.value" autofocus>
-  <!--
-    Rather than wiring up two-way data-binding ourselves
-    we can use Angular's [(ngModel)] syntax
-    <input type="text" [(ngModel)]="title.value">
-  -->
+<!-- <h1>{{title}}</h1> -->
 
-  <pre>this.data = {{ data | json }}</pre>
+<div class="calendar-abs">
+	<!-- each week goes here -->
+	<div *ngFor="#week of weeks" class="week-abs {{week.cssClasses}}" 
+		[style.top] = 'currentDrawer.top(week) + "px"'
+		[style.left] = 'currentDrawer.left(week) + "px"'>
+		<div class="first-day">{{week.startDay | date:dateFormat}}</div>
+		<div class="weekOfLife">{{week.weekOfLife + 1}}</div>
+		<!--<pre>{{week | json}}
+		</pre>-->
+		<div class="last-day">{{week.endDay | date:dateFormat}}</div>
+	</div>
 </div>
+

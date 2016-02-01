@@ -33,9 +33,8 @@ import {Home} from './home/home';
     }
   `],
   template: `
-    <header>
+    <!-- <header>
       <nav>
-        <h1>Hello {{ name }}</h1>
         <ul>
           <li router-active>
             <a [routerLink]=" ['Index'] ">Index</a>
@@ -48,18 +47,18 @@ import {Home} from './home/home';
           </li>
         </ul>
       </nav>
-    </header>
+    </header> -->
 
     <main>
       <router-outlet></router-outlet>
     </main>
 
-    <footer>
+    <!--<footer>
       WebPack Angular 2 Starter by <a [href]="url">@AngularClass</a>
       <div>
         <img [src]="angularclassLogo" width="10%">
       </div>
-    </footer>
+    </footer>-->
   `
 })
 @RouteConfig([
