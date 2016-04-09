@@ -2,10 +2,10 @@
 
 <div class="calendar-abs">
 	<!-- each week goes here -->
-	<div *ngFor="#week of weeks" class="week-abs {{week.cssClasses}}" 
+	<div *ngFor="#week of weeks" class="week-abs {{week.cssClasses}}"
 		[style.top] = 'currentDrawer.top(week) + "px"'
 		[style.left] = 'currentDrawer.left(week) + "px"'>
-		<div class="first-day">{{week.startDay | date:dateFormat}}</div>
+		<div class="first-day">{{week.startDay | date:'yyyy-MM-dd'}}</div>
 		<div class="weekOfLife">{{week.weekOfLife + 1}}</div>
 		<!--<pre>{{week | json}}
 		</pre>-->

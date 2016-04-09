@@ -4,7 +4,15 @@ import {FORM_DIRECTIVES} from 'angular2/common';
 import {Title} from './services/title';
 import {XLarge} from './directives/x-large';
 
+import {IWeek} from '../model/IWeek';
+import {ICalendar} from '../model/ICalendar';
+import {Calendar} from '../model/Calendar';
+import {ICalendarEvent} from '../model/ICalendarEvent';
+import {OneBillionSeconds} from '../model/OneBillionSeconds';
+import {Birthday} from '../model/Birthday';
+
 import * as _ from 'lodash';
+import moment = require("moment");
 
 var margin = 10,
   weekWidth = 200,
@@ -40,9 +48,7 @@ export class Home {
   public drawers = {
     print: {
       top: function(week) {
-      //console.log(' top');
         var ret = ((week.yearOfLife * 4) + week.weekOfMonth) * (weekHeight + margin);
-        //console.log(week, ret);
         return ret;
       },
       left: function(week) {
@@ -51,7 +57,7 @@ export class Home {
     }
   };
 
-  public dateFormat = 'd-M-yyyy';
+  public dateFormat = 'yyyy-MM-dd';
 
   public currentDrawer = this.drawers.print;
 
@@ -63,41 +69,16 @@ export class Home {
   }
 
   ngOnInit() {
-    console.log('hello `Home` component');
+
     // this.title.getData().subscribe(data => this.data = data);
 
     //_.forEach([1, 2, 3, 4], function(value) {
-    //console.log(value);
+
     //});
   }
 
 }
 
-interface IWeek {
-  weekOfLife : number;
-  startDay : Date;
-  endDay: Date;
-  monthOfLife: number;
-  yearOfLife: number;
-  weekOfyear: number;
-  weekOfMonth: number;
-  monthOfYear: number;
-  birthday: boolean;
-  cssClasses: string;
-}
-
-class Week implements IWeek{
-  public weekOfLife : number;
-  public startDay : Date;
-  public endDay: Date;
-  public monthOfLife: number;
-  public yearOfLife: number;
-  public weekOfyear: number;
-  public weekOfMonth: number;
-  public monthOfYear: number;
-  public birthday: boolean;
-  public cssClasses: string;
-}
 
 function addDays(date: Date, days:number) : Date {
     var newDate1 = new Date(date.getTime());
@@ -106,28 +87,29 @@ function addDays(date: Date, days:number) : Date {
     return newDate1;
 }
 
-var howManyWeeks = 5000;
-var startDate = new Date('2015-12-30');
+var numberOfWeeks = 5000;
+var startDate = new Date(2015, 11, 30);
+var endDay = moment(startDate).add(7 * numberOfWeeks, 'd');
 var weeks = new Array<IWeek>();
 
-var importantDates = [];
+var calendar: ICalendar;
 
+calendar = new Calendar(startDate, numberOfWeeks);
+
+
+var zoeBirthDay = new Date(2015, 11, 30);
+
+console.log(zoeBirthDay);
+var calendarEvents = [
+  new OneBillionSeconds(calendar),
+  new Birthday(calendar, 'Zoe Anna', zoeBirthDay)
+];
 var yearly : any[] = [
   {
     day: 30,
     month:12,
     cssClass: "own-birthday",
     text: function(i) { return i + 'Compleanno' }
-  },
-  function oneBillionSeconds (week: Week) {
-     var obsDate = new Date(startDate.getDate());
-     obsDate.setSeconds(obsDate.getSeconds() + 30);
-     console.log(week.startDay, obsDate);
-     var ret = week.startDay < obsDate && obsDate < week.endDay;
-     if (ret) {
-       console.log(obsDate);
-     }
-     return ret;
   }
 ]
 
@@ -146,7 +128,7 @@ var workers = {
     }
 };
 
-for (var i = 0; i < howManyWeeks; i ++){
+for (var i = 0; i < numberOfWeeks; i ++){
 
 
   var weeksPerYear = settings.weeksPerMonth * settings.monthsPerYear,
@@ -164,29 +146,15 @@ for (var i = 0; i < howManyWeeks; i ++){
     birthday: false,
     cssClasses: ''
   };
-
-  _.forEach(yearly, function(rule) {
-    workers[typeof rule](rule, curWeek);
+  _.forEach(calendarEvents,function(calendarEvent){
+    if (calendarEvent.InWeek(curWeek)) {
+      curWeek.cssClasses += calendarEvent.classes;
+      console.log(curWeek.cssClasses);
+      console.log('found event "' + calendarEvent.description + '" in week ' + curWeek.weekOfLife);
+    }
   });
 
-  var y = yearly[0];
-  if (typeof y === 'object'){
-    var birthDay = new Date(curWeek.startDay.getFullYear() + '-' + y.month + '-' + y.day);
-  }
-
-  function isInWeek(day, week){
-    return curWeek.startDay <= birthDay &&
-    birthDay <= curWeek.endDay;
-  }
-
-  if (isInWeek(birthDay,curWeek)){
-    curWeek.birthday = true;
-    curWeek.cssClasses += yearly[0].cssClass;
-  }
-
   weeks.push(curWeek);
-  //if (curWeek.weekOfLife === 261){
-  //}
   if (curWeek.birthday){
   }
 
