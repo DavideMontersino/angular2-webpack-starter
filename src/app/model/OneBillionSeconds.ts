@@ -14,6 +14,14 @@ export class OneBillionSeconds implements ICalendarEvent {
 
 	}
 
+	// TODO complete definition!
+	public get event () {
+		return {
+			date: new Date(),
+			description: this.description
+		};
+	}
+
 	public get description () {
 		return '1000.000.000 di secondi!';
 	}

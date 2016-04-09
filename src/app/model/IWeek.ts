@@ -1,3 +1,5 @@
+import {IEvent} from './IEvent';
+
 
 export interface IWeek {
 	weekOfLife: number;
@@ -9,5 +11,6 @@ export interface IWeek {
 	weekOfMonth: number;
 	monthOfYear: number;
 	birthday: boolean;
+	events: Array<IEvent>;
 	cssClasses: string;
 }

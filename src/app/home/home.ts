@@ -5,6 +5,7 @@ import {Title} from './services/title';
 import {XLarge} from './directives/x-large';
 
 import {IWeek} from '../model/IWeek';
+import {IEvent} from '../model/IEvent';
 import {ICalendar} from '../model/ICalendar';
 import {Calendar} from '../model/Calendar';
 import {ICalendarEvent} from '../model/ICalendarEvent';
@@ -86,24 +87,27 @@ function addDays(date: Date, days:number) : Date {
     newDate1.setDate(date.getDate() + days);
     return newDate1;
 }
-
-var numberOfWeeks = 5000;
+console.log('still alive');
+var numberOfWeeks = 2000;
 var startDate = new Date(2015, 11, 30);
 var endDay = moment(startDate).add(7 * numberOfWeeks, 'd');
 var weeks = new Array<IWeek>();
 
 var calendar: ICalendar;
-
+console.log('still alive2');
 calendar = new Calendar(startDate, numberOfWeeks);
 
 
 var zoeBirthDay = new Date(2015, 11, 30);
+var barbaraBirthDay = new Date(1986, 8, 7);
 
 console.log(zoeBirthDay);
 var calendarEvents = [
   new OneBillionSeconds(calendar),
-  new Birthday(calendar, 'Zoe Anna', zoeBirthDay)
+  new Birthday(calendar, 'Zoe Anna', zoeBirthDay),
+  new Birthday(calendar, 'Barbara', barbaraBirthDay)
 ];
+
 var yearly : any[] = [
   {
     day: 30,
@@ -118,9 +122,11 @@ var settings = {
   weeksPerMonth: 4
 };
 
+var weeksPerYear = settings.weeksPerMonth * settings.monthsPerYear;
+
 var workers = {
     'function': function (func, week: IWeek) {
-    
+
       func(week);
     },
     'object': function (obj){
@@ -129,10 +135,8 @@ var workers = {
 };
 
 for (var i = 0; i < numberOfWeeks; i ++){
-
-
-  var weeksPerYear = settings.weeksPerMonth * settings.monthsPerYear,
-    monthOfLife = Math.floor(i / settings.weeksPerMonth);
+  console.log('ssd');
+  var monthOfLife = Math.floor(i / settings.weeksPerMonth);
 
   var curWeek = {
     weekOfLife: i,
@@ -144,11 +148,14 @@ for (var i = 0; i < numberOfWeeks; i ++){
     weekOfMonth: i % settings.weeksPerMonth,
     monthOfYear: monthOfLife % settings.monthsPerYear,
     birthday: false,
-    cssClasses: ''
+    cssClasses: '',
+    events: Array<IEvent>()
   };
+
   _.forEach(calendarEvents,function(calendarEvent){
     if (calendarEvent.InWeek(curWeek)) {
       curWeek.cssClasses += calendarEvent.classes;
+      curWeek.events.push(calendarEvent.event);
       console.log(curWeek.cssClasses);
       console.log('found event "' + calendarEvent.description + '" in week ' + curWeek.weekOfLife);
     }
