@@ -1,24 +1,28 @@
 <!-- <h1>{{title}}</h1> -->
-
-<div class="calendar-abs">
-	<!-- each week goes here -->
-	<div *ngFor="#week of weeks" class="week-abs {{week.cssClasses}} cutCorner cutCorner2"
-		[style.top] = 'currentDrawer.top(week) + "px"'
-		[style.left] = 'currentDrawer.left(week) + "px"'>
-		<div class="upper1"></div>
-		<div class="upper2"></div>
-		<div class="first-day">{{week.startDay | date:'y'}}-{{week.startDay | date:'M'}}-{{week.startDay | date:'d'}}</div>
-		<div class="weekOfLife">{{week.weekOfLife + 1}}</div>
-		<!--<pre>{{week | json}}
-		</pre>-->
-		<ul class="week-events">
-			<li *ngFor="#event of week.events" class="event">
-				<span class="event-date">{{event.date | date:'d'}}</span>:
-				<span class="event-description">{{event.description}}</span>
-			</li>
-		</ul>
-		<div class="last-day">{{week.endDay | date:'y'}}-{{week.endDay | date:'M'}}-{{week.endDay | date:'d'}}</div>
-		<div class="bottom1"></div>
-		<div class="bottom2"></div>
+<div *ngIf="calendarContainerHeight" class="calendar-container"
+	[style.height] = 'calendarContainerHeight  + "px"'
+	[style.width] = 'calendarContainerWidth + "px"'
+>
+	<div class="calendar-abs">
+		<!-- each week goes here -->
+		<div *ngFor="#week of weeks" class="week-abs {{week.cssClasses}} cutCorner cutCorner2"
+			[style.top] = 'currentDrawer.top(week) + "px"'
+			[style.left] = 'currentDrawer.left(week) + "px"'>
+			<div class="upper1"></div>
+			<div class="upper2"></div>
+			<div class="first-day">{{week.startDay | date:'y'}}-{{week.startDay | date:'M'}}-{{week.startDay | date:'d'}}</div>
+			<div class="weekOfLife">{{week.weekOfLife + 1}}</div>
+			<!--<pre>{{week | json}}
+			</pre>-->
+			<ul class="week-events">
+				<li *ngFor="#event of week.events" class="event">
+					<span class="event-date">{{event.date | date:'d'}}</span>:
+					<span class="event-description">{{event.description}}</span>
+				</li>
+			</ul>
+			<div class="last-day">{{week.endDay | date:'y'}}-{{week.endDay | date:'M'}}-{{week.endDay | date:'d'}}</div>
+			<div class="bottom1"></div>
+			<div class="bottom2"></div>
+		</div>
 	</div>
 </div>

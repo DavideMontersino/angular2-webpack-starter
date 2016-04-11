@@ -1,7 +1,12 @@
+.calendar-container{
+
+    border:2px solid #ccc;
+}
+
 .week-abs {
   position: absolute;
-  height: 300px;
-  width: 200px;
+  height: 430px;
+  width: 270px;
   border: 1px solid #eee;
   background-color: #fff;
 }

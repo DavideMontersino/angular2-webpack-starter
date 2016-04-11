@@ -15,9 +15,13 @@ import {Birthday} from '../model/Birthday';
 import * as _ from 'lodash';
 import moment = require("moment");
 
-var margin = 10,
-  weekWidth = 200,
-  weekHeight = 300;
+var multiplier = 0.5,
+  marginTop = 800 * multiplier,
+  marginBottom = 400 * multiplier,
+  marginLeft = 200 * multiplier,
+  photoMargin = 50 * multiplier,
+  weekWidth = 540 * multiplier,
+  weekHeight = 860 * multiplier;
 
 @Component({
   // The selector is what angular internally uses
@@ -49,11 +53,11 @@ export class Home {
   public drawers = {
     print: {
       top: function(week) {
-        var ret = ((week.yearOfLife * 4) + week.weekOfMonth) * (weekHeight + margin);
+        var ret = ((week.yearOfLife * 4) + week.weekOfMonth) * (weekHeight + photoMargin) + marginTop;
         return ret;
       },
       left: function(week) {
-        return (week.monthOfYear) * (weekWidth + margin);
+        return (week.monthOfYear) * (weekWidth + photoMargin) + marginLeft;
       }
     }
   };
@@ -61,6 +65,10 @@ export class Home {
   public dateFormat = 'yyyy-MM-dd';
 
   public currentDrawer = this.drawers.print;
+
+
+  public calendarContainerHeight = ((numberOfWeeks / settings.monthsPerYear) * (weekHeight + photoMargin) + marginTop + marginBottom);
+  public calendarContainerWidth = (settings.monthsPerYear * (weekWidth + photoMargin) + marginLeft * 2);
 
   // Set our default values
   data = { value: '' };
@@ -87,21 +95,17 @@ function addDays(date: Date, days:number) : Date {
     newDate1.setDate(date.getDate() + days);
     return newDate1;
 }
-console.log('still alive');
-var numberOfWeeks = 2000;
+var numberOfWeeks = 5044;
 var startDate = new Date(2015, 11, 30);
 var endDay = moment(startDate).add(7 * numberOfWeeks, 'd');
 var weeks = new Array<IWeek>();
 
 var calendar: ICalendar;
-console.log('still alive2');
 calendar = new Calendar(startDate, numberOfWeeks);
-
 
 var zoeBirthDay = new Date(2015, 11, 30);
 var barbaraBirthDay = new Date(1986, 8, 7);
 
-console.log(zoeBirthDay);
 var calendarEvents = [
   new OneBillionSeconds(calendar),
   new Birthday(calendar, 'Zoe Anna', zoeBirthDay),
@@ -135,7 +139,6 @@ var workers = {
 };
 
 for (var i = 0; i < numberOfWeeks; i ++){
-  console.log('ssd');
   var monthOfLife = Math.floor(i / settings.weeksPerMonth);
 
   var curWeek = {
@@ -156,13 +159,20 @@ for (var i = 0; i < numberOfWeeks; i ++){
     if (calendarEvent.InWeek(curWeek)) {
       curWeek.cssClasses += calendarEvent.classes;
       curWeek.events.push(calendarEvent.event);
-      console.log(curWeek.cssClasses);
-      console.log('found event "' + calendarEvent.description + '" in week ' + curWeek.weekOfLife);
+      //console.log(curWeek.cssClasses);
+      //console.log('found event "' + calendarEvent.description + '" in week ' + curWeek.weekOfLife);
+    }
+    var minEventsLength = 6;
+    if (curWeek.events.length < minEventsLength) {
+      for (var i=0; i < minEventsLength - curWeek.events.length; i++){
+        curWeek.events.push({
+          description: '',
+          date: null
+        });
+      }
     }
   });
 
   weeks.push(curWeek);
-  if (curWeek.birthday){
-  }
 
 }
